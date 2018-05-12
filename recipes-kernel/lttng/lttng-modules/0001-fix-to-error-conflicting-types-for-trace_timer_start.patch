@@ -1,0 +1,32 @@
+From 0a8130485f9c51555916086768ab8123280420cc Mon Sep 17 00:00:00 2001
+From: flowergom <flowergom@gmail.com>
+Date: Sat, 12 May 2018 16:37:14 +0900
+Subject: [PATCH] fix to error: conflicting types for 'trace_timer_start'
+
+Do not use following definition
+void trace_##_name(_proto);
+---
+ probes/lttng-tracepoint-event-impl.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/probes/lttng-tracepoint-event-impl.h b/probes/lttng-tracepoint-event-impl.h
+index 45c38ff..2030b31 100644
+--- a/probes/lttng-tracepoint-event-impl.h
++++ b/probes/lttng-tracepoint-event-impl.h
+@@ -136,11 +136,11 @@
+ 
+ #undef TP_ARGS
+ #define TP_ARGS(...)	__VA_ARGS__
+-
++/*
+ #undef LTTNG_TRACEPOINT_EVENT_INSTANCE_MAP
+ #define LTTNG_TRACEPOINT_EVENT_INSTANCE_MAP(_template, _name, _map, _proto, _args) \
+ void trace_##_name(_proto);
+-
++*/
+ #undef LTTNG_TRACEPOINT_EVENT_INSTANCE_MAP_NOARGS
+ #define LTTNG_TRACEPOINT_EVENT_INSTANCE_MAP_NOARGS(_template, _name, _map) \
+ void trace_##_name(void);
+-- 
+2.7.4
+
